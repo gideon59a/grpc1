@@ -1,0 +1,45 @@
+# This package is based on the previous one (grpc1pack) while the  input and output formats are different
+
+# from https://www.semantics3.com/blog/a-simplified-guide-to-grpc-in-python-6c4e25f0c506/
+# python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. calculator.proto
+
+
+basic-grpc-python/
+├── calculator.py          # module containing a function
+|
+├── calculator.proto       # protobuf definition file
+|
+├── calculator_pb2_grpc.py # generated class for server/client
+├── calculator_pb2.py      # generated class for message
+|
+├── server.py              # a server to expose the function
+└── client.py              # a sample client
+
+grpc how to:
+============
+I used python3.8 with proto3.
+The first step is creating the .proto that defines the mesaages as well as the rpc calls. Use pycharm to detect syntax errors.
+A message is like a structure that defines the message payload structure. See calculator.proto example.
+After the proto file is done then the easiest way was to #cd to the python file project and run
+# python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. <proto file name>.proto
+This creates two files: <proto file name>_pb2.py and <proto file name>_pb2_grpc.py (In the example the file name was calculator.
+<name> == <proto file name without the extension> e.g. "calculator"
+The created <name_pb2_grpc file has a class named <name>Servicer that contains a function per rpc
+with the same name as the rpc in the proto file. These functions have to REDEFINED in the server.py.
+
+The next step is to create the server.py file that exposes the rpc calls.ngttt
+In the server create a class that inherits from <proto file name>_pb2_grpc.py the class < >Servicer and REDEFINE its functions.
+The server function has the following steps:
+    def SquareRootFactor(self, request, context): # Functions name is as the rpc name
+        response = calculator_pb2.NumberReply()  # prepare the response structure
+        response.value = calculator.square_root_factor(request.value, request.factor) # execute the needed function
+        return response # return
+Add this class to the server (I've not understood this step)
+Build the server channel, threads etc.
+
+The next step is to create the server.py file that exposes the rpc calls.
+- create the channel
+- create the client
+- create a valid request message with the format as defined in the rpc request. This is done simply using the structure
+already created in the pb2.py file.
+- make the call using the request function defined in the stub (client) in the pb2_grpc.py file.

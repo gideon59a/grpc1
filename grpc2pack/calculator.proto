@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+message NumberRequest {
+    float value = 1;
+    int32 factor = 2;
+}
+
+message NumberReply {
+    float value = 1;
+}
+
+message MultAll {
+    float multValue = 1;
+}
+
+service Calculator {
+    rpc SquareRootFactor(NumberRequest) returns (NumberReply) {}
+
+    rpc Mult(NumberRequest) returns (MultAll) {}
+
+}
