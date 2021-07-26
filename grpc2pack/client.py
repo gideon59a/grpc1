@@ -11,7 +11,8 @@ channel = grpc.insecure_channel('localhost:50051')
 stub = calculator_pb2_grpc.CalculatorStub(channel)
 
 # create a valid request message
-numberSet = calculator_pb2.NumberRequest(value=16, factor=10)
+numberSet = calculator_pb2.NumberRequest(value=16, factor=10)  # Create the request structure
+print("numberSet type and dump: ", type(numberSet), '\n', numberSet, '\n')
 
 # make the call
 response = stub.SquareRootFactor(numberSet)

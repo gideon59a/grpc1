@@ -29,9 +29,12 @@ class CalculatorServicer(calculator_pb2_grpc.CalculatorServicer):
     # the request and response are of the data type
     # calculator_pb2.NumberReply
     def SquareRootFactor(self, request, context):
+        print("context type and dump: ", type(context), '\n', context)  # Not clear what the context is used for
         print("Request type and dump: ", type(request), '\n', request)
-        response = calculator_pb2.NumberReply()  # prepare the response structure
+        response = calculator_pb2.NumberReply()  # prepare the response structure (still empty)
+        print("Pre-Response type and dump: ", type(response), '\n', response)  # It will show an empty structure
         response.value = calculator.square_root_factor(request.value, request.factor)
+        print("Post-Response type and dump: ", type(response), '\n', response)  # The response
         return response
 
     def Mult(self, request, context):
